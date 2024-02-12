@@ -14,6 +14,9 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(promptForAnswer))
+        /* that created a new UIBarButtonItem using the "add" system item, and configured it to run a method called promptForAnswer() when tapped */
+        
         if let startWordsURL = Bundle.main.url(forResource: "start", withExtension: "txt"){
             if let startWords = try? String(contentsOf: startWordsURL) {
                 allWords = startWords.components(separatedBy: "\n")
@@ -41,6 +44,28 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Word", for: indexPath)
         cell.textLabel?.text = usedWords[indexPath.row]
         return cell
+    }
+    
+    @objc func promptForAnswer(){
+        let ac = UIAlertController(title: "Enter answer", message: nil, preferredStyle: .alert)
+        ac.addTextField()
+        /*  addTextField() method just adds an editable text input field to the UIAlertController
+            UITextField is a simple editable text box that shows the keyboard so the user can enter something, we added a single text field to the UIAlertController using its addTextField() method
+         */
+        
+        let submitAction = UIAlertAction(title: "Submit", style: .default) {
+            [weak self, weak ac] _ in
+            guard let answer = ac?.textFields?[0].text else {return}
+            self?.submit(answer)
+            /* in: everything after that is the closure, so action in means that it accepts one parameter in, of type UIAlertAction */
+        }
+        ac.addAction(submitAction)
+        present(ac, animated: true)
+        /* addAction() method is used to add a UIAlertAction to a UIAlertController */
+    }
+    
+    func submit(_ answer: String) {
+        
     }
 }
 
