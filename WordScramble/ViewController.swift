@@ -57,7 +57,9 @@ class ViewController: UITableViewController {
             [weak self, weak ac] _ in
             guard let answer = ac?.textFields?[0].text else {return}
             self?.submit(answer)
-            /* in: everything after that is the closure, so action in means that it accepts one parameter in, of type UIAlertAction */
+            /* in: everything after that is the closure, so action in means that it accepts one parameter in, of type UIAlertAction 
+              3th line safely unwraps the array of text fields – it's optional because there might not be any.
+             4th line pulls out the text from the text field and passes it to our (all-new-albeit-empty) submit() method */
         }
         ac.addAction(submitAction)
         present(ac, animated: true)
@@ -65,7 +67,32 @@ class ViewController: UITableViewController {
     }
     
     func submit(_ answer: String) {
+        let lowerAnswer = answer.lowercased()
         
+        /* we have three if statements, one inside another. These are called nested statements, because you nest one inside the other
+           only if all three statements are true (the word is possible, the word hasn't been used yet, and the word is a real word), does the main block of code execute */
+        if isPossible(word: lowerAnswer){
+            if isOriginal(word: lowerAnswer) {
+                if isReal(word: lowerAnswer) {
+                    usedWords.insert(answer, at: 0)
+                    
+                    let indexPath = IndexPath(row: 0, section: 0)
+                    tableView.insertRows(at: [indexPath], with: .automatic)
+                }
+            }
+        }
+    }
+    
+    func isPossible(word: String) -> Bool{
+        return true
+    }
+    
+    func isOriginal(word: String) -> Bool{
+        return true
+    }
+    
+    func isReal(word: String) -> Bool{
+        return true
     }
 }
 
