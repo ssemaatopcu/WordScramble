@@ -84,15 +84,34 @@ class ViewController: UITableViewController {
     }
     
     func isPossible(word: String) -> Bool{
+        guard var tempWord = title?.lowercased() else{ return false}
+        for letter in word {
+            if let position = tempWord.firstIndex(of: letter) {
+                tempWord.remove(at: position)
+            } else {
+                return false
+            }
+        }
         return true
     }
     
     func isOriginal(word: String) -> Bool{
-        return true
+        return !usedWords.contains(word)
+        /* contains() is a method that checks whether the array it’s called on (usedWords) contains the value specified in parameter 2 (word)
+         ! means "not" or "opposite"
+         by using ! we're flipping it around so that the method returns true if the word is new */
     }
     
     func isReal(word: String) -> Bool{
-        return true
+        let checker = UITextChecker()
+        let range = NSRange(location: 0, length: word.utf16.count)
+        let misspelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
+        return misspelledRange.location == NSNotFound
+        
     }
+    /*  UITextChecker this is an iOS class that is designed to spot spelling errors, which makes it perfect for knowing if a given word is real or not
+     NSRange this is used to store a string range, which is a value that holds a start position and a length. so use 0 for the start position and the string's length for the length.
+     rangeOfMisspelledWord(in:) method of our UITextChecker instance. the first parameter is our string, word, the second is our range to scan (the whole string), and the last is the language we should be checking with, where en selects English.
+     calling rangeOfMisspelledWord(in:) returns another NSRange structure, which tells where the misspelling was found */
 }
 
