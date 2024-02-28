@@ -95,13 +95,13 @@ class ViewController: UITableViewController {
         } else {
             guard let title = title else { return}
             errorTitle = "Word not possible"
-            errorMessage = "You can't spell that word from\(title.lowercased())."
+            errorMessage = "You can't spell that word from \(title.lowercased())."
             //string interpolation to show the view controller's title as a lowercase string
         }
         
         let ac = UIAlertController(title: errorTitle, message: errorMessage, preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default)
-                     present(ac, animated: true)
+        ac.addAction(UIAlertAction(title: "OK", style: .default))
+        present(ac, animated: true)
     }
     
     func isPossible(word: String) -> Bool{
